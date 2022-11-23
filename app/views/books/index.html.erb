@@ -1,68 +1,55 @@
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>book</title>
-    <meta name="csrf-param" content="authenticity_token" />
-    <meta name="csrf-token" content="ag0HuAnJa53MXNJSYz6kI4dMKJYymfMWfwxCuqWHbBKe4DSfB0RlxP4KiIZ0x5XkXme9zabiXUVotldv1fhN8g==" />
-
-    <link rel="stylesheet" media="all" href="top.css" data-turbolinks-track="reload" />
-    <script src="/assets/application-114264dd93c8ff30e4335b71eed7949d66c4e7a8eb62e2de6284c046fe07104b.js" data-turbolinks-track="reload"></script>
-    <div class="success">
-     <%= flash[:notice] %>
-    </div>
-  </head>
-
-  <body>
-
 <h1>Books</h1>
 
 <table>
-  <thead>
+  <tr>
+    <th>
+      Title
+    </th>
+    <th>Body</th>
+  </tr>
+  <% @books.each do |book| %>
     <tr>
-
-
-    <h4 class="heading">Tittle</h4>
-    <h4 class="heading">Body</h4>
-    
+      <th>
+        <%= book.title %>
+      </th>
+      <th>
+        <%= book.body %>
+      </th>
+      <th>
+        <%= link_to "show", book_path(book.id) %>
+      </th>
+      <th>
+        <%= link_to "edit", edit_book_path(book.id) %>
+      </th>
+      <th>
+        <%= link_to "Destroy", book_path(book.id) , method: :delete, "data-confirm" => "本当に削除しますか？" %>
+      </th>
     </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-     <% @books.each do |book| %>
-     <div class="bodying">
-    <p>
-      <%=link_to book.title, book_path(book.id) %>
-    </p>
-    <span>
-      <%=link_to book.body, book_path(book.id) %>
-
-    </span>
-    </div>
-      <% end %>
-    </tr>
-  </tbody>
+  <%end%>
 </table>
 
+<h1>New Book</h1>
 
-<h2>New book</h2>
-<form class="new_book" id="new_book" action="/books" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="cttU+YOBbnGFnD7MKBexIfvfKfmUaOme/5KVcSI3PLPzEWS24NB6mGpazGLw5a0YuxFSVIUQDH6I+/3xvttt1w==" />
+<%= form_with model:@book, local:true do |f| %>
 
-  <div class="field">
-    <label for="book_title">Title</label>
-    <input class="book_title" type="text" name="book[title]" id="book_title" />
-  </div>
+ <% if @book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:</h2>
+      <ul>
+        <% @book.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+　<% end %>
 
-  <div class="field">
-    <label for="book_body">Body</label>
-    <textarea class="book_body" name="book[body]" id="book_body">
-</textarea>
-  </div>
+  <h4>Title</h4>
+  <%= f.text_field :title %>
 
-  <div class="actions">
-    <input type="submit" name="commit" value="Create Book" data-disable-with="Create Book" />
-  </div>
-</form>
-  </body>
-</html>
+  <h4>Body</h4>
+  <%= f.text_area :body %>
+
+  <%= f.submit 'Create Book' %>
+
+<% end %>

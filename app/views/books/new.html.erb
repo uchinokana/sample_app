@@ -1,18 +1,23 @@
-<h1>新規投稿</h1>
+<h1>Books</h1>
 <% if @book.errors.any? %>
-  <%= @book.errors.count %>件のエラーが発生しました
-  <ul>
-    <% @book.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
+ <%= @book.errors.count %>件のエラーが発生しました
+ <ul>
+   <% @book.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+   <% end %>
   </ul>
-<% end %>
-
-<%= form_with model: @book, url: '/books', method: :post do |f| %>
-  <h4>タイトル</h4>
-  <%= f.text_field :title %>
-  <h4>本文</h4>
-  <%= f.text_area :body %>
-  <%= f.submit '投稿' %>
-
+ <% end %>
+<a href="/books">Back</a>
+<%= form_with model: @book do |form| %>
+  <div>
+    <div><%= form.label :title %></div>
+    <div><%= form.text_field :title %></div>
+  </div>
+  <div>
+    <div><%= form.label :body %></div>
+    <div><%= form.text_field :body %></div>
+  </div>
+  <div>
+    <%= form.submit %>
+  </div>
 <% end %>
